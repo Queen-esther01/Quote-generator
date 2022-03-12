@@ -6,6 +6,7 @@ import axios from 'axios'
 interface Quote {
     quote: string;
     author?: string;
+    loading?: boolean;
 }
 
 interface QuotesState {
@@ -15,7 +16,8 @@ interface QuotesState {
 const initialState: QuotesState = {
     quotes: {
         quote: "",
-        author: ''
+        author: '',
+        loading: false
     }
 };
 
@@ -27,11 +29,16 @@ const quoteSlice = createSlice({
     name: "quote",
     initialState,
     reducers: {
+        fetchQuoteStarted: (state) =>{
+            state.quotes.loading = true;
+        },
         fetchQuotesSuceeded: (state, action: PayloadAction<PayloadData>) => {
             state.quotes = Object.assign({}, state.quotes, { quote:action.payload.content, author:action.payload.author });
+            state.quotes.loading = false
         },
         fetchQuotesFailed: (state, action: PayloadAction<string>) => {
             state.quotes.quote = 'Failed to fetch string';
+            state.quotes.loading = false
         }
     }
 })
@@ -41,6 +48,9 @@ const quoteSlice = createSlice({
 
 export const getQuote = () =>{
     return async(dispatch: any) =>{
+        dispatch({
+            type: fetchQuoteStarted.type
+        })
         try {
             const requestOptions = {
                 headers: {
@@ -66,6 +76,6 @@ export const getQuote = () =>{
     
 }
 
-export const { fetchQuotesSuceeded, fetchQuotesFailed } = quoteSlice.actions;
+export const { fetchQuoteStarted, fetchQuotesSuceeded, fetchQuotesFailed } = quoteSlice.actions;
 
 export default quoteSlice;
