@@ -217,7 +217,7 @@ function Quotes() {
                     <p id="text" className='font-bold text-center'>{quote}</p>
                     <span id="author" className="float-right my-5">- {author}</span>
                     <div className='flex justify-between items-center w-full mt-20'>
-                        <a href="twitter.com/intent/tweet" target={'_blank'} id="tweet-quote">
+                        <a href={`https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text=${quote} ${author}`} target={'_blank'} id="tweet-quote">
                             <img src={Twitter} alt="twitter" className="w-8 h-8" />
                         </a>
                         <div className='flex items-center'>
